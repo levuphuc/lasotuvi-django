@@ -95,26 +95,18 @@ $(document).ready(function () {
         $("#laso").addClass("anlaso");
         alert("Có lỗi, không thể lấy được lá số.");
     }
-    $("input#luulaso").click(function () {
-        if ($("#laso").is(':hidden')) {
-            alert("Hãy an lá số trước khi lưu!");
-            return false;
-        }
-        html2canvas(document.getElementById("laso"), {
-            background: '#FFFFFF',
-            onrendered: function (canvas) {
-                // var ctx = canvas.getContext('2d');
-                // ctx.webkitImageSmoothingEnabled = false;
-                // ctx.mozImageSmoothingEnabled = false;
-                // ctx.imageSmoothingEnabled = false;
-                $("#urlLaso").val("");
-                var a = document.createElement('a');
-                a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
-                a.download = 'laso.jpg';
-                a.click();
-            },
-            width: 805,
-            height: 965
+
+    document.getElementById('downloadBtn').addEventListener('click', function () {
+        const target = document.getElementById('laso');
+
+        html2canvas(target, {
+            scale: 2, // tăng độ nét
+            useCORS: true // nếu có ảnh từ CDN cần CORS
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'la_so_tu_vi.png';
+            link.href = canvas.toDataURL();
+            link.click();
         });
     });
 
@@ -185,4 +177,6 @@ $(document).ready(function () {
         }, 333);
         return true;
     } /* end download() */
+
+
 });

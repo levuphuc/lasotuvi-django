@@ -1,3 +1,4 @@
+from django.forms.models import construct_instance
 from lasotuvi.AmDuong import (dichCung, ngayThangNam, ngayThangNamCanChi, nguHanh,
                      nguHanhNapAm, thienCan, timCoThan, timCuc, timHoaLinh,
                      timLuuTru, timPhaToai, timThienKhoi, timThienMa,
@@ -21,13 +22,13 @@ from lasotuvi.Sao import (saoAnQuang, saoBachHo, saoBacSy, saoBatToa, saoBenh,
                  saoThienHu, saoThienHy, saoThienKhoc, saoThienKhoi,
                  saoThienKhong, saoThienLa, saoThienLuong, saoThienMa,
                  saoThienPhu, saoThienPhuc, saoThienQuan, saoThienQuy,
-                 saoThienRieu, saoThienSu, saoThienTai, saoThienTho,
+                 saoThienDieu, saoThienSu, saoThienTai, saoThienTho,
                  saoThienThuong, saoThienTru, saoThienTuong, saoThienViet,
                  saoThienY, saoThieuAm, saoThieuDuong, saoTieuHao,
                  saoTrangSinh, saoTrucPhu, saoTu, saoTuePha, saoTuongQuan,
                  saoTuPhu, saoTuVi, saoTuyet, saoVanKhuc, saoVanTinh,
                  saoVanXuong, saoVuKhuc)
-
+import copy
 
 def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     if duongLich is True:
@@ -103,6 +104,64 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     viTriPhaQuan = dichCung(viTriThienPhu, 10)
     diaBan.nhapSao(viTriPhaQuan, saoPhaQuan)
 
+
+    viTriThienHinh = dichCung(10, tt - 1)
+    diaBan.nhapSao(viTriThienHinh, saoThienHinh)
+
+
+    # Vòng Thiên mã
+    viTriThienMa = timThienMa(chiNam)
+    diaBan.nhapSao(viTriThienMa, saoThienMa)
+
+    viTriHoaCai = dichCung(viTriThienMa, 2)
+    diaBan.nhapSao(viTriHoaCai, saoHoaCai)
+
+    viTriKiepSat = dichCung(viTriThienMa, 3)
+    diaBan.nhapSao(viTriKiepSat, saoKiepSat)
+
+    viTriDaoHoa = dichCung(viTriKiepSat, 4)
+    diaBan.nhapSao(viTriDaoHoa, saoDaoHoa)
+
+    
+
+    # Vòng Địa chi - Thái tuế
+    viTriThaiTue = chiNam
+    diaBan.nhapSao(viTriThaiTue, saoThaiTue)
+
+    viTriThieuDuong = dichCung(viTriThaiTue, 1)
+    diaBan.nhapSao(viTriThieuDuong, saoThieuDuong, saoThienKhong)
+
+    viTriTangMon = dichCung(viTriThaiTue, 2)
+    diaBan.nhapSao(viTriTangMon, saoTangMon)
+
+    viTriThieuAm = dichCung(viTriThaiTue, 3)
+    diaBan.nhapSao(viTriThieuAm, saoThieuAm)
+
+    viTriQuanPhu3 = dichCung(viTriThaiTue, 4)
+    diaBan.nhapSao(viTriQuanPhu3, saoQuanPhu3)
+
+    viTriTuPhu = dichCung(viTriThaiTue, 5)
+    diaBan.nhapSao(viTriTuPhu, saoTuPhu, saoNguyetDuc)
+
+    viTriTuePha = dichCung(viTriThaiTue, 6)
+    diaBan.nhapSao(viTriTuePha, saoTuePha)
+
+    viTriLongDuc = dichCung(viTriThaiTue, 7)
+    diaBan.nhapSao(viTriLongDuc, saoLongDuc)
+
+    viTriBachHo = dichCung(viTriThaiTue, 8)
+    diaBan.nhapSao(viTriBachHo, saoBachHo)
+
+    viTriPhucDuc = dichCung(viTriThaiTue, 9)
+    diaBan.nhapSao(viTriPhucDuc, saoPhucDuc, saoThienDuc)
+
+    viTriDieuKhach = dichCung(viTriThaiTue, 10)
+    diaBan.nhapSao(viTriDieuKhach, saoDieuKhach)
+
+    viTriTrucPhu = dichCung(viTriThaiTue, 11)
+    diaBan.nhapSao(viTriTrucPhu, saoTrucPhu)
+
+
     # Vòng Lộc tồn
     # Vị trí sao Lộc tồn ở Can của năm sinh trên địa bàn
     #  sao Bác sỹ ở cùng cung với Lộc tồn
@@ -142,43 +201,6 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
 
     viTriQuanPhu2 = dichCung(viTriLocTon, 11 * amDuongNamNu)
     diaBan.nhapSao(viTriQuanPhu2, saoQuanPhu2)
-
-    # Vòng Địa chi - Thái tuế
-    viTriThaiTue = chiNam
-    diaBan.nhapSao(viTriThaiTue, saoThaiTue)
-
-    viTriThieuDuong = dichCung(viTriThaiTue, 1)
-    diaBan.nhapSao(viTriThieuDuong, saoThieuDuong, saoThienKhong)
-
-    viTriTangMon = dichCung(viTriThaiTue, 2)
-    diaBan.nhapSao(viTriTangMon, saoTangMon)
-
-    viTriThieuAm = dichCung(viTriThaiTue, 3)
-    diaBan.nhapSao(viTriThieuAm, saoThieuAm)
-
-    viTriQuanPhu3 = dichCung(viTriThaiTue, 4)
-    diaBan.nhapSao(viTriQuanPhu3, saoQuanPhu3)
-
-    viTriTuPhu = dichCung(viTriThaiTue, 5)
-    diaBan.nhapSao(viTriTuPhu, saoTuPhu, saoNguyetDuc)
-
-    viTriTuePha = dichCung(viTriThaiTue, 6)
-    diaBan.nhapSao(viTriTuePha, saoTuePha)
-
-    viTriLongDuc = dichCung(viTriThaiTue, 7)
-    diaBan.nhapSao(viTriLongDuc, saoLongDuc)
-
-    viTriBachHo = dichCung(viTriThaiTue, 8)
-    diaBan.nhapSao(viTriBachHo, saoBachHo)
-
-    viTriPhucDuc = dichCung(viTriThaiTue, 9)
-    diaBan.nhapSao(viTriPhucDuc, saoPhucDuc, saoThienDuc)
-
-    viTriDieuKhach = dichCung(viTriThaiTue, 10)
-    diaBan.nhapSao(viTriDieuKhach, saoDieuKhach)
-
-    viTriTrucPhu = dichCung(viTriThaiTue, 11)
-    diaBan.nhapSao(viTriTrucPhu, saoTrucPhu)
 
     #  Vòng ngũ hành cục Tràng sinh
     # !!! Đã sửa !!! *LƯU Ý Phần này đã sửa* Theo cụ Thiên Lương: Nam -> Thuận,
@@ -314,16 +336,18 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     viTriThienHy = dichCung(viTriHongLoan, 6)
     diaBan.nhapSao(viTriThienHy, saoThienHy)
 
+
+    
+
     #  Thiên Quan - Thiên Phúc
     viTriThienQuan, viTriThienPhuc = timThienQuanThienPhuc(canNam)
     diaBan.nhapSao(viTriThienQuan, saoThienQuan)
     diaBan.nhapSao(viTriThienPhuc, saoThienPhuc)
 
-    viTriThienHinh = dichCung(10, tt - 1)
-    diaBan.nhapSao(viTriThienHinh, saoThienHinh)
+    
 
-    viTriThienRieu = dichCung(viTriThienHinh, 4)
-    diaBan.nhapSao(viTriThienRieu, saoThienRieu, saoThienY)
+    viTriThienDieu = dichCung(viTriThienHinh, 4)
+    diaBan.nhapSao(viTriThienDieu, saoThienDieu, saoThienY)
 
     viTriCoThan = timCoThan(chiNam)
     diaBan.nhapSao(viTriCoThan, saoCoThan)
@@ -351,8 +375,11 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     #    Theo cụ Thiên Lương: Lấy cung Thân làm tháng Giêng, đếm thuận nhưng
     #    nhảy cung là Thiên giải. Một số trang web đếm nhưng không nhảy cung???
     #    Liệu phương cách nào đúng?
-    viTriThienGiai = dichCung(9, (2 * tt) - 2)
+    viTriThienGiai = dichCung(9, tt - 1)
     diaBan.nhapSao(viTriThienGiai, saoThienGiai)
+
+
+
 
     viTriDiaGiai = dichCung(viTriTaPhu, 3)
     diaBan.nhapSao(viTriDiaGiai, saoDiaGiai)
@@ -370,26 +397,15 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     viTriThienSu = diaBan.cungTatAch
     diaBan.nhapSao(viTriThienSu, saoThienSu)
 
-    # Vòng Thiên mã
-    viTriThienMa = timThienMa(chiNam)
-    diaBan.nhapSao(viTriThienMa, saoThienMa)
-
-    viTriHoaCai = dichCung(viTriThienMa, 2)
-    diaBan.nhapSao(viTriHoaCai, saoHoaCai)
-
-    viTriKiepSat = dichCung(viTriThienMa, 3)
-    diaBan.nhapSao(viTriKiepSat, saoKiepSat)
-
-    viTriDaoHoa = dichCung(viTriKiepSat, 4)
-    diaBan.nhapSao(viTriDaoHoa, saoDaoHoa)
+    # Đẩu quân
+    viTriDauQuan = dichCung(chiNam, -tt + gioSinh)
+    diaBan.nhapSao(viTriDauQuan, saoDauQuan)
 
     # Phá toái
     viTriPhaToai = timPhaToai(chiNam)
     diaBan.nhapSao(viTriPhaToai, saoPhaToai)
 
-    # Đẩu quân
-    viTriDauQuan = dichCung(chiNam, -tt + gioSinh)
-    diaBan.nhapSao(viTriDauQuan, saoDauQuan)
+    
 
     #  Tứ Hóa
     # An theo 10 câu của cụ Thiên Lương trong cuốn
@@ -467,3 +483,131 @@ def lapDiaBan(diaBan, nn, tt, nnnn, gioSinh, gioiTinh, duongLich, timeZone):
     viTriTriet1, viTriTriet2 = timTriet(canNam)
     diaBan.nhapTriet(viTriTriet1, viTriTriet2)
     return (diaBan)
+
+
+def ten_chi_to_id_from_diaChi(ten_chi):
+    ten_chi = ten_chi.strip().lower()
+    for chi in diaChi:
+        if chi.get("tenChi", "").strip().lower() == ten_chi:
+            return chi.get("id", 0)  # Lưu ý: 'Tý' có id = 1, 'Hợi' = 12
+    return 0
+
+
+
+def sao_luu_obj(sao_obj):
+    sao_clone = copy.deepcopy(sao_obj)
+    sao_clone.saoTen = f"L.{sao_clone.saoTen}"
+    sao_clone.saoID = sao_clone.saoID + 200
+    return sao_clone
+
+def an_sao_luu_nien(diaBan, canNam, chiNam):
+    if isinstance(chiNam, str):
+        chi_id = ten_chi_to_id_from_diaChi(chiNam)
+        if chi_id == 0:
+            raise ValueError(f"Không tìm thấy ID cho địa chi: {chiNam}")
+        chiNam = chi_id
+
+
+    # 1. Lưu Thái Tuế
+    viTriThaiTue = chiNam
+    diaBan.nhapSao(viTriThaiTue, sao_luu_obj(saoThaiTue))
+
+    #saoThieuDuong
+
+    # 2. Vòng Thái Tuế (12 sao):
+    sao_vong_thai_tue = [
+        sao_luu_obj(saoThieuDuong), sao_luu_obj(saoTangMon), sao_luu_obj(saoThieuAm), sao_luu_obj(saoQuanPhu3), sao_luu_obj(saoTuPhu),
+        sao_luu_obj(saoTuePha), sao_luu_obj(saoLongDuc), sao_luu_obj(saoBachHo), sao_luu_obj(saoPhucDuc), sao_luu_obj(saoDieuKhach), sao_luu_obj(saoTrucPhu)
+    ]
+    for i, sao in enumerate(sao_vong_thai_tue):
+        diaBan.nhapSao(dichCung(viTriThaiTue, i + 1), sao)
+
+    # 3. Lưu Lộc Tồn theo Can
+    viTriLuuLocTon = thienCan[canNam]['vitriDiaBan']
+    diaBan.nhapSao(viTriLuuLocTon, sao_luu_obj(saoLocTon))
+
+    # 4. Lưu Kình Dương (trước 1 cung), Đà La (sau 1 cung)
+    viTriKinhDuong = dichCung(viTriLuuLocTon, -1)
+    viTriDaLa = dichCung(viTriLuuLocTon, 1)
+    diaBan.nhapSao(viTriKinhDuong, sao_luu_obj(saoKinhDuong))
+    diaBan.nhapSao(viTriDaLa, sao_luu_obj(saoDaLa))
+
+    # 5. Lưu Thiên Mã theo tứ trật tam hợp
+    tam_hop = {
+        3: 9,  # Dần, Ngọ, Tuất → Mã tại Thân (9)
+        9: 3,  # Thân, Tý, Thìn → Mã tại Dần (3)
+        6: 12, # Tỵ, Dậu, Sửu → Mã tại Hợi (12)
+        12: 6, # Hợi, Mão, Mùi → Mã tại Tỵ (6)
+    }
+    viTriThienMa = tam_hop.get(chiNam if chiNam in tam_hop else chiNam % 12, 3)
+    diaBan.nhapSao(viTriThienMa, sao_luu_obj(saoThienMa))
+
+    # 6. Lưu Thiên Khốc (nghịch từ Ngọ đến chi năm)
+    viTriThienKhoc = dichCung(7, -(chiNam - 1))
+    diaBan.nhapSao(viTriThienKhoc, sao_luu_obj(saoThienKhoc))
+
+    # 7. Lưu Thiên Hư (thuận từ Ngọ đến chi năm)
+    viTriThienHu = dichCung(7, chiNam - 1)
+    diaBan.nhapSao(viTriThienHu, sao_luu_obj(saoThienHu))
+
+
+    # 9. Bổ sung sao Lưu theo vị trí động (phổ biến)
+    # danh_sach_sao = [
+    #     ("Đào hoa", 2),
+    #     ("Văn xương", 2),
+    #     ("Văn khúc", 3),
+    #     ("Thiên việt", 3),
+    #     ("Hồng loan", 5),
+    #     ("Thiên khôi", 7),
+    #     ("Kiếp sát", 9)
+    # ]
+    # 9. Lưu Đào Hoa và các sao đi theo
+    dao_hoa_vi_tri = {
+        (3, 7, 11): 4,  # Dần, Ngọ, Tuất → Mão (cung số 4)
+        (9, 1, 5): 10,  # Thân, Tý, Thìn → Dậu (10)
+        (6, 10, 2): 7,  # Tỵ, Dậu, Sửu → Ngọ (7)
+        (12, 4, 8): 1  # Hợi, Mão, Mùi → Tý (1)
+    }
+    viTriDaoHoa = None
+    for group, cung_so in dao_hoa_vi_tri.items():
+        if chiNam in group:
+            viTriDaoHoa = cung_so
+            diaBan.nhapSao(viTriDaoHoa, sao_luu_obj(saoDaoHoa))
+            diaBan.nhapSao(viTriDaoHoa, sao_luu_obj(saoVanXuong))
+            break
+
+    if viTriDaoHoa is not None:
+        diaBan.nhapSao(dichCung(viTriDaoHoa, 2), sao_luu_obj(saoVanKhuc))
+        diaBan.nhapSao(dichCung(viTriDaoHoa, 2), sao_luu_obj(saoThienViet))
+        diaBan.nhapSao(dichCung(viTriDaoHoa, 4), sao_luu_obj(saoHongLoan))
+        diaBan.nhapSao(dichCung(viTriDaoHoa, 6), sao_luu_obj(saoThienKhoi))
+        diaBan.nhapSao(dichCung(viTriDaoHoa, 8), sao_luu_obj(saoKiepSat))
+
+    # 8. Lưu Tứ Hóa (Lộc, Quyền, Khoa, Kỵ)
+    sao_vi_tri = {}
+    for cung in diaBan.thapNhiCung:
+        for sao in cung.cungSao:
+            sao_vi_tri[sao['saoTen']] = cung.cungSo
+
+    tuhoa_theo_can = {
+        1: ("Liêm trinh", "Phá quân", "Vũ khúc", "Thái dương"),
+        2: ("Thiên cơ", "Thiên lương", "Tử vi", "Thái âm"),
+        3: ("Thiên đồng", "Thiên cơ", "Văn xương", "Liêm trinh"),
+        4: ("Thái âm", "Thiên đồng", "Thiên cơ", "Cự môn"),
+        5: ("Tham lang", "Thái âm", "Tả phù", "Thiên cơ"),
+        6: ("Vũ khúc", "Tham lang", "Thiên lương", "Văn khúc"),
+        7: ("Thái dương", "Vũ khúc", "Thiên đồng", "Văn xương"),
+        8: ("Cự môn", "Thái dương", "Văn khúc", "Văn xương"),
+        9: ("Thiên lương", "Tử vi", "Hữu bật", "Vũ khúc"),
+        10: ("Phá quân", "Cự môn", "Thái âm", "Tham lang")
+    }
+
+    if canNam in tuhoa_theo_can:
+        loc, quyen, khoa, ky = tuhoa_theo_can[canNam]
+        diaBan.nhapSao(sao_vi_tri.get(loc), sao_luu_obj(saoHoaLoc))
+        diaBan.nhapSao(sao_vi_tri.get(quyen), sao_luu_obj(saoHoaQuyen))
+        diaBan.nhapSao(sao_vi_tri.get(khoa), sao_luu_obj(saoHoaKhoa))
+        diaBan.nhapSao(sao_vi_tri.get(ky), sao_luu_obj(saoHoaKy))
+    return diaBan
+
+

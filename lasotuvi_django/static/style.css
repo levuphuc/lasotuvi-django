@@ -16,7 +16,7 @@ html {
 body {
     margin: 0;
     padding-bottom: 3rem;
-    font-family: "Noto Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: center;
     background-color: #fff;
 }
@@ -34,6 +34,7 @@ a {
 a:hover {
     color: #104e8b;
 }
+
 
 h1,
 h2,
@@ -55,8 +56,8 @@ h1 small {
 }
 
 h2 {
-    margin-top: 3rem;
-    font-size: 2rem;
+    margin-top: 0.3rem;
+    font-size: 1.5rem;
 }
 
 p {
@@ -154,21 +155,25 @@ code {
 
 .laso {
     width: 800px;
-    height: 960px;
+    height: 1200px;
     margin-right: auto;
     margin-left: auto;
     overflow: hidden;
     background-image: url('texture.jpg');
 }
 
-.cung-top,
-cung-bottom {
-    height: 25px;
+.cung-top, .cung-bottom {
+    height: 20px;
     margin: 2px 2px 0 0;
+	padding: 4px;
+}
+
+.cung-bottom {
+    height: 15px !important;
 }
 
 .cung-middle {
-    height: 180px;
+    height: 235px;
 }
 
 .cung-middle ul,
@@ -177,7 +182,7 @@ li {
 }
 
 .hanhKim {
-    color: #9E9E9E;
+    color: #808080;
 }
 
 .hanhMoc {
@@ -185,15 +190,15 @@ li {
 }
 
 .hanhThuy {
-    color: #000100;
+    color: #2196f3;
 }
 
 .hanhHoa {
-    color: #a71a14;
+    color: #ff0000;
 }
 
 .hanhTho {
-    color: #e6bd37;
+    color: #ffa000;
 }
 
 .chinhTinh {
@@ -205,8 +210,6 @@ li {
 
 .cungChu {
     text-transform: uppercase;
-    font-size: 1.1em;
-    padding-bottom: 0.2em;
 }
 
 .cungThan {
@@ -214,30 +217,49 @@ li {
 }
 
 .xungChieu {
-    background-color: #D7CCC8;
+    background-color: #c8d7cd;
 }
 
 .diaCung {
-    width: 200px;
-    height: 240px;
+    width: 225px;
+    height: 300px;
     /*background-color: #f3f6ef;*/
 }
 
 .thienBan {
-    width: 400px;
-    height: 480px;
+    width: 450px;
+    height: 600px;
     position: relative;
 }
 
+
+
 .thienBan .noidung {
-    padding: 5px 10px 10px 10px;
+    padding: 10px;
     text-align: justify;
+    font-size: 1.1em;
+    line-height: 1.5em;
+}
+
+.yinyang {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(to bottom, black 0%, black 50%, white 50%, white 100%);
+    display: block;
+    box-shadow: 6px 6px 27px 4px rgba(0, 0, 0, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: 10s rotate linear infinite;
+    opacity: .1;
+    margin: auto;
 }
 
 .thienBan .noidung .header {
     text-align: center;
     font-weight: bold;
-    padding-bottom: 1rem;
+    padding-bottom: 0.3rem;
 }
 
 .thienBan .noidung .sinhkhac {
@@ -258,13 +280,14 @@ li {
 
 .thienBan .mausac {
     position: absolute;
-    height: 100px;
+    height: 30px;
     bottom: 0;
 }
 
 .thienBan .mausac .gioithieuhanh {
     /*    width: 50px;*/
     font-weight: bold;
+    text-align: center;
 }
 
 input {
@@ -309,7 +332,7 @@ select {
 }
 
 .border {
-    border: thin #a8a8a8 solid;
+    border: thin #ddd solid;
 }
 
 .border-right {
@@ -385,30 +408,32 @@ input.primary {
     text-shadow: none;
 }
 
-
+.phuTinh {
+	font-size: 1.0em;
+	line-height: 1.3em;
+	
+	
+}
 /*.phuTinh .col{
     padding-bottom: 0.2em;
 }*/
 
 .phuTinh .saotot {
     width: 46%;
-    line-height: 1.3em;
-    text-align: left;
-    display: inline-block;
-    white-space: nowrap;
-    vertical-align: top;
-    max-height: 120px;
-    font-weight: bold;
+    text-align: left;   
+    max-height: 120px; 
+	display: inline-block;
+	white-space: nowrap;
+	vertical-align: top;
 }
 
 .phuTinh .saoxau {
-    width: 46%;
-    line-height: 1.3em;
-    display: inline-block;
-    text-align: right;
-    white-space: nowrap;
-    vertical-align: top;
-    font-weight: bold;
+    width: 46%;    
+    text-align: right;    
+    max-height: 120px;
+	display: inline-block;
+	white-space: nowrap;
+	vertical-align: top;
 }
 
 .blocks {
@@ -417,8 +442,8 @@ input.primary {
     display: inline-block;
     /*overflow: hidden;
     text-overflow: ellipsis;*/
-    line-height: 1.2em;
-    font-size: 14px;
+    line-height: 1.4em;
+    font-size: 1em;
 }
 
 
@@ -483,7 +508,7 @@ input.primary {
 }
 
 .label-tuan {
-    background-color: #3E2723;
+    background-color: #505050;
 }
 
 .label-triet {
@@ -633,4 +658,128 @@ input.primary {
 
 .tooltips {
     cursor: help;
+}
+
+.btn {
+	background-color: #fff;
+    display: inline-block;
+	padding: 2px 5px 1px 5px;
+    font-size: 0.9em;	
+    line-height: 1.5;
+    margin-bottom: 0;
+	font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.label2 {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+
+/*Begin Yin-Yang*/
+
+
+
+
+.circle {
+  position: absolute;
+  top: 25%;
+  left: 16%;
+  opacity: 0.06;
+  z-index: 0;
+  width:300px;
+  height:300px;
+  background:black;
+  border-radius:100%;
+  text-align:center;
+  animation:rotate 40000s infinite;
+}
+.circle .yin {
+  width:150px;
+  height:150px;
+  background:white;
+  border-radius:100%;
+}
+
+.circle .yang {
+  width:150px;
+  height:150px;
+  background:black;
+  border-radius:100%;
+  margin-top:-154px;
+  z-index:auto;
+      position: absolute;
+  margin-left:75px;
+
+}
+
+.feher {
+  width:150px;
+  height:300px;
+  background:white;
+  display:inline-block;
+  margin-top:-150px;
+  border-top-right-radius:150px;
+    border-bottom-right-radius:150px;
+}
+
+.p-black {
+  width:50px;
+  height:50px;
+  background:black;
+  border-radius:100%;
+  position:absolute;
+  margin-top:-260px;
+  margin-left:120px;
+}
+
+.p-white {
+  width:50px;
+  height:50px;
+  background:white;
+  border-radius:100%;
+  position:absolute;
+  margin-top:-110px;
+  margin-left:120px;
+}
+
+@keyframes rotate {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(-3600000deg);}
+}
+
+/*End Yin-Yang*/
+
+.credit {
+    font-style: italic;
+    color: goldenrod;
+    font-family: "Courier New";
+}
+.notes {
+    color: lightslategrey;
+}
+.ngayxem {
+    text-align: center;
+    margin-top: 2em;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.xs {
+    font-size: 0.9em;
+    color: peru;
 }
