@@ -10,8 +10,9 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <link href="https://fonts.googleapis.com/css?family=Noto+Serif" rel="stylesheet">
     <link href="{% static "style.css" %}" rel="stylesheet">
-    <script src="{% static 'client.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="{% static 'jquery.min.js' %}"></script>
+    <script src="{% static 'jsrender.min.js' %}"></script>
+    <script src="{% static 'html2canvas.js' %}"></script>
 </head>
 
 <body>
@@ -420,8 +421,22 @@ document.getElementById("exportTextBtn").addEventListener("click", function (eve
         });
 });
 
-
-
+</script>
+<script src="{% static 'lstv.min.js' %}"></script>
+<script src="{% static 'zebra_tooltips.js' %}"></script>
+<script>
+// Register service worker for caching
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('{% static "sw.js" %}')
+      .then(function(registration) {
+        console.log('ServiceWorker registration successful: ', registration.scope);
+      })
+      .catch(function(err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+  });
+}
 </script>
 </body>
 
