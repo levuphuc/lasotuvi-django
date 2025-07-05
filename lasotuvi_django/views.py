@@ -1,8 +1,12 @@
 import datetime
 import json
+import hashlib
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.cache import cache
+from django.views.decorators.cache import cache_page
+from django.views.decorators.gzip import gzip_page
 from lasotuvi.DiaBan import diaBan, tinh_dia_van_theo_cung
 from lasotuvi.ThienBan import lapThienBan
 from lasotuvi_django.utils import lapDiaBan, an_sao_luu_nien
@@ -181,6 +185,7 @@ def xuat_text_hoan_chinh(thien_ban, dia_ban):
     return "\n".join(lines)
 
 
+@gzip_page
 def api(request):
     now = datetime.datetime.now()
     hoTen = (request.GET.get('hoten'))
@@ -191,6 +196,18 @@ def api(request):
     gioSinh = int(request.GET.get('giosinh', 1))
     timeZone = int(request.GET.get('muigio', 7))
     duongLich = False if request.GET.get('amlich') == 'on' else True
+
+    # Create cache key based on input parameters (excluding hoTen for privacy)
+    cache_key_data = f"{ngaySinh}_{thangSinh}_{namSinh}_{gioSinh}_{gioiTinh}_{timeZone}_{duongLich}"
+    cache_key = hashlib.md5(cache_key_data.encode()).hexdigest()
+    
+    # Try to get from cache first
+    cached_result = cache.get(f"laso_{cache_key}")
+    if cached_result:
+        # Update the name in cached result and return
+        cached_data = json.loads(cached_result)
+        cached_data['thienBan']['ten'] = hoTen
+        return HttpResponse(json.dumps(cached_data), content_type="application/json")
 
     db = lapDiaBan(diaBan, ngaySinh, thangSinh, namSinh, gioSinh,
                    gioiTinh, duongLich, timeZone)
@@ -206,7 +223,13 @@ def api(request):
         'thienBan': thienBan,
         'thapNhiCung': db.thapNhiCung
     }
-    my_return = (json.dumps(laso, default=lambda o: o.__dict__))
+    my_return = json.dumps(laso, default=lambda o: o.__dict__)
+    
+    # Cache the result for 1 hour (excluding personal name)
+    cache_data = json.loads(my_return)
+    cache_data['thienBan']['ten'] = ''  # Remove name for caching
+    cache.set(f"laso_{cache_key}", json.dumps(cache_data), 3600)
+    
     return HttpResponse(my_return, content_type="application/json")
 
 
