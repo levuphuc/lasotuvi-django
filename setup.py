@@ -16,7 +16,7 @@ setup(name='lasotuvi_django',
       install_requires=[
           "Django >= 2.1.2",
           "lasotuvi @ git+https://github.com/levuphuc/lasotuvi.git@master#egg=lasotuvi",
-          "pytz==2018.5",
+          "pytz>=2018.5,<2025",
           "six==1.11.0",
           "typed-ast==1.1.0",
       ],
